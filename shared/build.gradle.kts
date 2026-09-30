@@ -1,12 +1,16 @@
-plugins { id("org.jetbrains.kotlin.multiplatform") }
+plugins { kotlin("multiplatform") }
+
 kotlin {
-    androidTarget()
+    // JVM target: runs the commonTest suite on any machine and is consumable
+    // by an Android app module (androidJvm resolves the jvm variant).
+    jvm()
+    // Apple targets compile only on macOS hosts; Gradle skips them elsewhere.
     listOf(iosX64(), iosArm64(), iosSimulatorArm64()).forEach {
         it.binaries.framework { baseName = "shared"; isStatic = true }
     }
     sourceSets {
-        commonMain.dependencies {
-            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
+        commonTest.dependencies {
+            implementation(kotlin("test"))
         }
     }
 }
