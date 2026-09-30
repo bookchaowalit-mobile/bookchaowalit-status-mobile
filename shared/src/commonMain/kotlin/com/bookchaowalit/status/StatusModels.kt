@@ -28,8 +28,13 @@ data class Incident(
         require(updates.isNotEmpty()) { "incident $id needs at least one update" }
     }
 
-    /** Updates sorted oldest-first, regardless of input order. */
-    val timeline: List<IncidentUpdate> get() = updates.sortedBy { it.timestampMs }
+    /**
+     * Updates sorted oldest-first, regardless of input order. Updates sharing a
+     * timestamp are ordered by stage so e.g. "resolved" always follows
+     * "monitoring" and input order cannot reopen a resolved incident.
+     */
+    val timeline: List<IncidentUpdate>
+        get() = updates.sortedWith(compareBy<IncidentUpdate> { it.timestampMs }.thenBy { it.stage.ordinal })
 
     val currentStage: IncidentStage get() = timeline.last().stage
 

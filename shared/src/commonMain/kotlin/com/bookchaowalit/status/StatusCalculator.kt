@@ -72,12 +72,18 @@ object StatusCalculator {
 /**
  * Formats an uptime value for display, e.g. 99.95 -> "99.95%", null -> "No data".
  * Rounds to two decimals, except that anything below 100 is capped at "99.99%"
- * so a window with failed checks is never shown as a perfect "100.00%".
+ * so a window with failed checks is never shown as a perfect "100.00%", and
+ * anything above 0 is raised to "0.01%" so a window with some successful
+ * checks is never shown as a total "0.00%" outage. NaN shows "No data".
  */
 fun formatUptime(percent: Double?): String {
-    if (percent == null) return "No data"
+    if (percent == null || percent.isNaN()) return "No data"
     val rounded = kotlin.math.round(percent * 100).toLong()
-    val hundredths = if (percent < 100.0 && rounded >= 10_000) 9_999L else rounded
+    val hundredths = when {
+        percent < 100.0 && rounded >= 10_000 -> 9_999L
+        percent > 0.0 && rounded <= 0 -> 1L
+        else -> rounded
+    }
     val whole = hundredths / 100
     val frac = (hundredths % 100).toString().padStart(2, '0')
     return "$whole.$frac%"

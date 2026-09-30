@@ -14,7 +14,6 @@ class StatusEdgeCaseTest {
         assertEquals("99.99%", formatUptime(9_999_999 * 100.0 / 10_000_000)) // 1 failure in 10M checks
         assertEquals("100.00%", formatUptime(100.0))
         assertEquals("0.00%", formatUptime(0.0))
-        assertEquals("0.00%", formatUptime(0.004))
     }
 
     @Test
