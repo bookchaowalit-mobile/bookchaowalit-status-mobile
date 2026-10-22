@@ -13,7 +13,7 @@ Android/iOS UI or data source yet.
 - P1: Data layer — fetch component status/checks from the status backend
   (Ktor client in `commonMain`, with a fake for tests).
 - P2: Add `kotlinx-datetime` for human-readable incident timestamps.
-- P2: Pin `distributionSha256Sum` in `gradle-wrapper.properties`.
+- ~~P2: Pin `distributionSha256Sum` in `gradle-wrapper.properties`.~~ Done 2026-10-22.
 
 ## Done in this pass (pass 1)
 

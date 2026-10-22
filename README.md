@@ -5,6 +5,20 @@ app (component health, uptime history, incidents).
 
 Part of [Chaowalit Greepoke](https://bookchaowalit.com)'s 101 Portfolio Projects.
 
+## Canonical template
+
+This repo **is the canonical Kotlin Multiplatform template** in
+`bookchaowalit-mobile`: a `shared` KMP module (JVM + iOS targets) with
+`commonTest` suites, a committed Gradle wrapper (checksum-pinned), JDK 17, and
+fail-closed CI. Copies built from the same scaffold:
+
+- [`portfolio-techspace-mobile`](https://github.com/bookchaowalit-mobile/portfolio-techspace-mobile)
+
+Each copy owns its code (no shared package). Consolidation or archiving of the
+copies is pending owner decision D5 (BD-033), per
+`repository-catalog/portfolio/MOBILE-CONSOLIDATION-2026-10.md` in solo-empire.
+What exists today: [PRODUCT.md](PRODUCT.md).
+
 ## What is here today
 
 Only the shared business-logic module exists. There is **no Android or iOS UI
@@ -41,8 +55,11 @@ Requires JDK 17+.
 ./gradlew :shared:iosSimulatorArm64Test   # macOS only
 ```
 
-CI (`.github/workflows/build.yml`) runs `:shared:build` on Ubuntu and the iOS
-simulator tests on macOS. Failures fail the workflow.
+CI (`.github/workflows/build.yml`) runs `:shared:build :shared:allTests` on
+`ubuntu-24.04` (JDK 17), the iOS simulator tests on `macos-14`, and the shared
+`security.yml` scan (gitleaks, Semgrep, OSV-Scanner, Trivy) from
+`bookchaowalit/platform-ci-workflows` v1.1.1. Any failing job fails the
+workflow (no `|| true`).
 
 ## Related
 
